@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salary Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.3rem;
+            color: green;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const age = parseInt(document.getElementById('age').value);
+            const experience = parseInt(document.getElementById('experience').value);
+            if (age < 18) {
+                alert("Age must be at least 18.");
+                return false;
+            }
+            if (experience >= age) {
+                alert("Experience must be less than age.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Salary Prediction</h2>
+        <form action="/predict" method="post" onsubmit="return validateForm()">
+            <div class="mb-3">
+                <label for="age" class="form-label">Age</label>
+                <input type="number" class="form-control" name="age" id="age" min="18" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="gender" class="form-label">Gender</label>
+                <select class="form-select" name="gender" id="gender" required>
+                    {% for gender in gender_options %}
+                        <option value="{{ gender }}">{{ gender }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="education" class="form-label">Education Level</label>
+                <select class="form-select" name="education" id="education" required>
+                    {% for education in education_options %}
+                        <option value="{{ education }}">{{ education }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="job" class="form-label">Job Title</label>
+                <select class="form-select" name="job" id="job" required>
+                    {% for job in job_options %}
+                        <option value="{{ job }}">{{ job }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="experience" class="form-label">Experience (Years)</label>
+                <input type="number" class="form-control" name="experience" id="experience" min="0" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Predict Salary</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result">Predicted Salary: ${{ prediction | round(2) }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
