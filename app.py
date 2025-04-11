@@ -47,6 +47,7 @@ def predict():
         input_data = np.array([[age, gender_encoded, education_encoded, job_encoded, experience]])
         prediction_scaled = model.predict(input_data)[0]
         prediction = scaler.inverse_transform([[prediction_scaled]])[0][0]
+        prediction=prediction-30000
 
         return render_template("index.html",
             prediction=prediction,
